@@ -41,7 +41,7 @@ public class AdminController {
                 restTemplate.exchange(URL_SERVER_USERS, HttpMethod.GET,
                         httpEntity, new ParameterizedTypeReference<List<User>>() {
                         });
-        return responseEntity;
+        return ResponseEntity.status(HttpStatus.OK).body(responseEntity.getBody());
     }
 
     @PostMapping(value = "user/{id}/delete")
