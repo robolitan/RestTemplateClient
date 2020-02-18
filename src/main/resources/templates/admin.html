@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="../static/addit_style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <title>Admin page</title>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand" style="color: #e9e9e5">Spring Boot</div>
+        <div>
+            <form action="/logout" method="post" id="logoutForm" name="logoutForm">
+                <a type="submit" style="color: #e9e9e5" id="sendLogoutForm">logout</a>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid d-block" style="background-color: #dddddd">
+    <div class="row vh-100">
+        <nav class="col-2 sidebar m-0 p-0" style="background-color:rgba(236,236,236,1)">
+            <div class="sidebar-sticky d-block">
+                <br>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">User</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-10 d-block px-4">
+            <h1 class="my-3">Admin panel</h1>
+            <ul class="nav nav-tabs mt-2">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#users_table" data-toggle="tab" role="tab">All users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#new_user" data-toggle="tab" role="tab">New user</a>
+                </li>
+            </ul>
+            <div class="container-fluid d-block bg-white p-0">
+                <div class="tab-content shadow">
+
+                    <!--таблица юзеров-->
+                    <div role="tabpanel" class="tab-pane active" id="users_table">
+                        <nav class="navbar navbar-dark" style="background-color: rgba(165,165,165,1)">
+                            <div class="container-fluid">
+                                <div class="navbar-brand" style="color: black">All user</div>
+                            </div>
+                        </nav>
+                        <table class="table table-hover bg-white">
+                            <tr class="text-mx-center">
+                                <th>ID</th>
+                                <th>Login</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Birthday</th>
+                                <th class="text-center">action</th>
+                            </tr>
+                            <tbody id="usersTable"></tbody>
+                        </table>
+                    </div>
+
+                    <!--Окно добавления нового юзера-->
+                    <div role="tabpanel" class="tab-pane" id="new_user">
+                        <nav class="navbar" style="background-color:  rgba(165,165,165,1)">
+                            <div class="container-fluid">
+                                <div class="navbar-brand rounded-top" style="color: black">New user</div>
+                            </div>
+                        </nav>
+                        <form id="addUserForm" class="col-4 p-2 text-center m-auto bg-white rounded-bottom"
+                              method="post">
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="loginAdd">Login</label>
+                                <input type="text" class="form-control" name="login" id="loginAdd"
+                                       placeholder="Login"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="firstNameAdd">F.Name</label>
+                                <input type="text" class="form-control" name="firstName" id="firstNameAdd"
+                                       placeholder="First name"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="lastNameAdd">L.Name</label>
+                                <input type="text" class="form-control" name="lastName" id="lastNameAdd"
+                                       placeholder="Last name">
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="birthdayAdd">Birthday</label>
+                                <input type="date" class="form-control" name="birthday" id="birthdayAdd"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="passwordAdd">Password</label>
+                                <input type="password" class="form-control" name="password" id="passwordAdd"
+                                       placeholder="Password"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <input id="add_user_button" class="btn btn-success" type="submit" value="Add new user">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--модальное окно-->
+
+<div class="modal" id="modal_edit" role="dialog"
+     aria-labelledby="modalLabel" aria-hidden="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" class="col-7 p-2 text-center m-auto bg-white rounded-bottom"
+                      action="/test/edit" method="post">
+                    <div class="form-group">
+                        <input type="text" name="id" id="idModal"
+                               hidden>
+                        <label class="font-weight-bold" for="loginModal">Login</label>
+                        <input type="text" class="form-control" id="loginModal" name="login"
+                               placeholder="Login"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"
+                               for="firstNameModal">F.Name</label>
+                        <input type="text" class="form-control"
+                               id="firstNameModal"
+                               name="firstName"
+                               placeholder="First name"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"
+                               for="lastNameModal">L.Name</label>
+                        <input type="text" class="form-control"
+                               id="lastNameModal"
+                               name="lastName"
+                               placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold"
+                               for="birthdayModal">Birthday</label>
+                        <input type="date" class="form-control"
+                               id="birthdayModal"
+                               name="birthday"
+                               required>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label class="font-weight-bold"
+                               for="passwordModal">Password</label>
+                        <input type="password" class="form-control"
+                               id="passwordModal"
+                               name="password">
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="checkbox">
+                            <label class="custom-control-label font-weight-bold" for="checkbox">Admin</label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="roles" hidden></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="modal_update_user_btn">Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/main.js"></script>
+</body>
+</html>
