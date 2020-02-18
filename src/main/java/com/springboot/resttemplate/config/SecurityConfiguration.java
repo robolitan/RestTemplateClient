@@ -26,7 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+        /*http.sessionManagement().maximumSessions(1).
+                and().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);*/
 
         http
                 .csrf()
